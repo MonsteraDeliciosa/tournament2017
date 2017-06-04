@@ -1,0 +1,22 @@
+.header {
+  font-family: Arial;
+}
+
+.answer-box {
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  border: 1px solid black;
+  text-align: center;
+}
+
+/*.answer-container .vertical {
+  display: block;
+}*/
+
+.question-paragraph {
+  /*height: 30px;*/
+  margin:5px 0;
+  font-family: Arial;
+  display: block;
+}
