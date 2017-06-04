@@ -10,13 +10,22 @@
   text-align: center;
 }
 
-/*.answer-container .vertical {
+.horizontal > * {
+  display: inline-block;
+}
+
+.vertical > * {
   display: block;
-}*/
+  text-align: center;
+}
 
 .question-paragraph {
   /*height: 30px;*/
   margin:5px 0;
   font-family: Arial;
   display: block;
+}
+
+.answer-list {
+  padding: 0;
 }

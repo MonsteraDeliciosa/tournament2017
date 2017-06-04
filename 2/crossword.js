@@ -1,3 +1,7 @@
+(function drawGrid() {
+  var grid;
+})();
+
 function getStrings() {
   var xmlhttp = new XMLHttpRequest();
 
@@ -21,19 +25,21 @@ function getStrings() {
           answerNode.className = "question-paragraph";
           var questionStr = document.createTextNode(i + '. ' + question);
 
+          console.log(i + '. ' + question);
+          console.log(i + '. ' + answer);
+
+
           answerNode.appendChild(questionStr);
           list.appendChild(answerNode);
 
           var answerContainer = document.createElement("DIV");
           container.appendChild(answerContainer);
 
-          if (i % 2 === 0) {
+          // if (i % 2 === 0) {
             answerContainer.className = "answer-container horizontal";
-          }
-
-          if (i % 2 !== 0) {
-            answerContainer.className = "answer-container vertical";
-          }
+          // } else {
+            // answerContainer.className = "answer-container vertical";
+          // }
 
           var numberStr = document.createTextNode(i + '. ');
           answerContainer.appendChild(numberStr);
@@ -66,5 +72,19 @@ function getStrings() {
 getStrings();
 
 //TODO
+//
+// function checkMatchingLetters(answer) {
+//
+//   // let previous;
+//
+//   /*TODO
+//   * check if letters match
+//   * if so - render in opposite direction:
+//     - slice answer: prefix-commonPart-appendix
+//
+//   */
+//
+// };
+//
 // function focusNextLetter() {};
 // function validateAnswer() {};
