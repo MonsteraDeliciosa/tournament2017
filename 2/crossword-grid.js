@@ -1,21 +1,23 @@
 (function drawGrid() {
+  // var size = prompt('Enter grid size') || 20;
+  var size = 20;
   var table = document.getElementsByClassName('crossword-table')[0];
-  console.log(table);
 
-  for (var y = 0; y < 20; y++) {
+  for (var y = 0; y < size; y++) {
     var row = document.createElement("DIV");
     row.className = "answer-row";
 
-    for (var x = 0; x < 20; x++) {
+    for (var x = 0; x < size; x++) {
       var box = document.createElement("DIV");
-      box.className = "answer-box bordered-gray horizontal";
+      box.className = "answer-box bordered-gray horizontal empty";
+      box.setAttribute('data-x', x);
+      box.setAttribute('data-y', y);
       box.setAttribute('id', x + '_' + y);
       row.appendChild(box);
     }
 
     table.appendChild(row);
   }
-  // var answerContainer = document.createElement("DIV");
 })();
 
 (function getStrings() {
@@ -31,7 +33,7 @@
         sortAnswers(response);
 
       } else if (xmlhttp.status == 400) {
-        console.log("There was an error 400");
+        console.log("error 400");
       } else {
         console.log("something else other than 200 was returned");
       }
@@ -54,9 +56,6 @@ function printQuestions(response) {
     var questionNode = document.createElement("P");
     questionNode.className = "question-paragraph";
     var questionStr = document.createTextNode(i + '. ' + question);
-
-    console.log(i + '. ' + question);
-    console.log(i + '. ' + answer);
 
     questionNode.appendChild(questionStr);
     list.appendChild(questionNode);
@@ -81,27 +80,69 @@ function sortAnswers(response) {
   });
 
   console.log(sortedDesc);
-
   placeOnBoard(sortedDesc);
 }
 
 function placeOnBoard(wordsArray) {
   var placed = document.getElementsByClassName('letter-box');
 
-  if (!placed.length) {
+  function findEmptySpace(word, axis, axisNo) {
 
-    // for (var j = 0; j < answer.length; j++) {
-    //
-    //   var input = document.createElement("input");
-    //
-    //   input.className = "answer-box";
-    //   input.setAttribute('type', 'text');
-    //   input.setAttribute('maxLength', '1');
-    //
-    //   answerContainer.appendChild(input);
-    // }
+    var rowAxis = document.querySelectorAll('[data-' + axis + '="' + axisNo + '"]');
+    var filtered = [];
 
+    function findEmptyTile() {
+      var firstEmpty = rowAxis.querySelectorAll('.empty')[0];
+    }
+
+    for (var i = 0; i < rowAxis.length; i++) {
+      if (rowAxis[i].childNodes.length === 0) {
+        filtered.push(rowAxis[i]);
+      } else {
+        filtered = [];
+        //start the loop with next empty element
+      }
+    }
+    // console.log(rowAxis);
+    // console.log(filtered);
   }
+
+  findEmptySpace("janusz", "y", 3);
+
+  function placeVertical(word, columnNo) {
+
+    //find n empty following tiles
+    var column = document.querySelectorAll('[data-x="' + columnNo + '"]');
+    var wordLen = word.length;
+
+    console.log(column);
+
+    for (var i = 0; i < wordLen; i++) {
+
+      var input = document.createElement("input");
+
+      input.className = "letter-box";
+      input.setAttribute('type', 'text');
+      input.setAttribute('maxLength', '1');
+
+      //TODO
+      //tile append input
+      //tile remove class empty
+    }
+  }
+
+  // if (!placed.length) {
+  //   //place longest word on board vertical or horizontal //Math.random
+  // }
+  //
+  // else {
+  //   //for every letter of current word check if matches any of previous word
+  //   //Math.rand choose one of previous words and place on board crossing with it
+  //
+  //   if (!matches.length) {
+  //     //find random n empty tiles where n === word length
+  //   }
+  // }
 }
 
 //TODO
