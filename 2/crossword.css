@@ -3,26 +3,31 @@
 }
 
 .answer-box {
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   display: inline-block;
-  border: 1px solid black;
+  text-align: center;
+  font-size: 12px;
+}
+
+.bordered-gray {
+  border: 1px solid #ddd;
+}
+
+.letter-box {
+  border: 1px solid #000;
+  height: 100%;
+  width: 100%;
   text-align: center;
 }
 
-.horizontal > * {
+.horizontal>* {
   display: inline-block;
 }
-
-.vertical > * {
-  display: block;
-  text-align: center;
-}
-
 .question-paragraph {
-  /*height: 30px;*/
-  margin:5px 0;
+  margin: 5px 0;
   font-family: Arial;
+  font-size: 15px;
   display: block;
 }
 
