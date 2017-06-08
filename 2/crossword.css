@@ -46,6 +46,10 @@
   display: block;
 }
 
+.highlighted {
+  background: yellow;
+}
+
 .answer-list {
   padding: 0;
 }
