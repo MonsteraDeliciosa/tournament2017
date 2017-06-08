@@ -79,8 +79,6 @@ function sortAnswers(response) {
     return b.text.length - a.text.length;
   });
 
-  console.log(sortedDesc);
-  // placeOnBoard(sortedDesc);
   placeFirstWord(sortedDesc);
 }
 
@@ -94,15 +92,15 @@ function setDirection() {
   }
 }
 
-
 function placeFirstWord(sortedAnswers) {
   var firstWord = sortedAnswers[0];
   var direction = setDirection();
-
+  var rows = document.getElementsByClassName('answer-row').length;
+  var randomXY = Math.floor(Math.random() * rows);
+  
   if (direction === 'horizontal') {
     for (var x = 0; x < firstWord.length; x++) {
-      var row = document.querySelectorAll('[data-y="0"]');
-      var tile = document.querySelectorAll('[data-x="' + x + '"]')[0];
+      var tile = document.querySelectorAll('[data-x="' + x + '"][data-y="' + randomXY + '"]')[0];
       var input = document.createElement("input");
 
       input.className = "letter-box";
@@ -116,8 +114,7 @@ function placeFirstWord(sortedAnswers) {
   
   if (direction === 'vertical') {
     for (var y = 0; y < firstWord.length; y++) {
-      var row = document.querySelectorAll('[data-x="0"]');
-      var tile = document.querySelectorAll('[data-y="' + y + '"]')[0];
+      var tile = document.querySelectorAll('[data-y="' + y + '"][data-x="' + randomXY + '"]')[0];
       var input = document.createElement("input");
 
       input.className = "letter-box";
@@ -127,7 +124,10 @@ function placeFirstWord(sortedAnswers) {
       tile.appendChild(input);
       tile.classList.remove('empty');
     }
-  }
+  }  
+  var answers = sortedAnswers.slice(1);
+  
+  // placeOnBoard(answers);
 
 }
 
@@ -157,27 +157,6 @@ function placeOnBoard(wordsArray) {
 
   findEmptySpace("janusz", "y", 3);
 
-  function placeVertical(word, columnNo) {
-
-    //find n empty following tiles
-    var column = document.querySelectorAll('[data-x="' + columnNo + '"]');
-    var wordLen = word.length;
-
-    console.log(column);
-
-    for (var i = 0; i < wordLen; i++) {
-
-      var input = document.createElement("input");
-
-      input.className = "letter-box";
-      input.setAttribute('type', 'text');
-      input.setAttribute('maxLength', '1');
-
-      //TODO
-      //tile append input
-      //tile remove class empty
-    }
-  }
 
   // if (!placed.length) {
   //   //place longest word on board vertical or horizontal //Math.random
