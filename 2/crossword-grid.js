@@ -51,8 +51,7 @@ function toggleHighlight(element) {
 
   if (question.classList === 'question-paragraph highlighted') {
     question.classList.remove('highlighted');
-  }
-  else {
+  } else {
     question.classList.add('highlighted');
   }
 }
@@ -105,6 +104,18 @@ function setDirection() {
   }
 }
 
+function createLetterInput(input, tile, firstWord, letter) {
+  input.className = "letter-box";
+  input.setAttribute('type', 'text');
+  input.setAttribute('data-number', firstWord.no);
+  input.setAttribute('maxLength', '1');
+  input.setAttribute('value', letter);
+  // input.addEventListener('click', toggleHighlight(input));
+
+  tile.appendChild(input);
+  tile.classList.remove('empty');
+}
+
 function placeWords(sortedAnswers, direction) {
   var firstWord = sortedAnswers[0];
   var otherWords = sortedAnswers.slice(1);
@@ -117,43 +128,33 @@ function placeWords(sortedAnswers, direction) {
   }
 
   if (dir === 'horizontal') {
+
+    var num = Math.floor(Math.random() * (rows - firstWord.length));
+
     for (var x = 0; x < firstWord.length; x++) {
-      var tile = document.querySelectorAll('[data-x="' + x + '"][data-y="' + randomXY + '"]')[0];
+      var tile = document.querySelectorAll('[data-x="' + (num + x) + '"][data-y="' + randomXY + '"]')[0];
       var input = document.createElement("input");
       var letter = firstWord.text[x];
 
-      input.className = "letter-box";
-      input.setAttribute('type', 'text');
-      input.setAttribute('data-number', firstWord.no);
-      input.setAttribute('maxLength', '1');
-      input.setAttribute('value', letter);
-
-      tile.appendChild(input);
-      tile.classList.remove('empty');
-      // input.addEventListener('click', toggleHighlight(input));
-
+      createLetterInput(input, tile, firstWord, letter);
     }
+
     sortedAnswers = sortedAnswers.slice(1);
     placeWords(sortedAnswers, 'vertical');
   }
 
   if (dir === 'vertical') {
+
+    var num = Math.floor(Math.random() * (rows - firstWord.length));
+
     for (var y = 0; y < firstWord.length; y++) {
-      var tile = document.querySelectorAll('[data-y="' + y + '"][data-x="' + randomXY + '"]')[0];
+      var tile = document.querySelectorAll('[data-y="' + (num + y) + '"][data-x="' + randomXY + '"]')[0];
       var input = document.createElement("input");
       var letter = firstWord.text[y];
 
-      input.className = "letter-box";
-      input.setAttribute('type', 'text');
-      input.setAttribute('data-number', firstWord.no);
-      input.setAttribute('maxLength', '1');
-      input.setAttribute('value', letter);
-
-      tile.appendChild(input);
-      tile.classList.remove('empty');
-      // input.addEventListener('click', toggleHighlight(input));
-
+      createLetterInput(input, tile, firstWord, letter);
     }
+
     sortedAnswers = sortedAnswers.slice(1);
     placeWords(sortedAnswers, 'horizontal');
   }
