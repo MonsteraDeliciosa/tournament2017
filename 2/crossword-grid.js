@@ -1,6 +1,6 @@
 (function drawGrid() {
   // var size = prompt('Enter grid size') || 20;
-  var size = 20;
+  var size = 30;
   var table = document.getElementsByClassName('crossword-table')[0];
 
   for (var y = 0; y < size; y++) {
@@ -91,6 +91,10 @@ function sortAnswers(response) {
     return b.text.length - a.text.length;
   });
 
+  for (var i = 0; i < response.length; i++) {
+    console.log(sortedDesc[i].text);
+  }
+
   placeWords(sortedDesc);
 }
 
@@ -104,7 +108,10 @@ function setDirection() {
   }
 }
 
-function createLetterInput(input, tile, firstWord, letter) {
+function createLetterInput(tile, firstWord, letter) {
+
+  var input = document.createElement("input");
+
   input.className = "letter-box";
   input.setAttribute('type', 'text');
   input.setAttribute('data-number', firstWord.no);
@@ -116,49 +123,67 @@ function createLetterInput(input, tile, firstWord, letter) {
   tile.classList.remove('empty');
 }
 
-function placeWords(sortedAnswers, direction) {
-  var firstWord = sortedAnswers[0];
-  var otherWords = sortedAnswers.slice(1);
-  var dir = direction || setDirection();
-  var rows = document.getElementsByClassName('answer-row').length;
-  var randomXY = Math.floor(Math.random() * rows);
+function placeWords(sortedAnswers, direction, xy, dist) {
 
   if (!sortedAnswers.length) {
     return;
   }
 
+  var firstWord = sortedAnswers[0];
+  var rowsAmount = document.getElementsByClassName('answer-row').length;
+  var dir = direction || setDirection();
+  var randXY = xy || Math.floor(Math.random() * rowsAmount);
+  var maxDist = dist || Math.floor(Math.random() * (rowsAmount - firstWord.length));
+
+
   if (dir === 'horizontal') {
-
-    var num = Math.floor(Math.random() * (rows - firstWord.length));
-
     for (var x = 0; x < firstWord.length; x++) {
-      var tile = document.querySelectorAll('[data-x="' + (num + x) + '"][data-y="' + randomXY + '"]')[0];
-      var input = document.createElement("input");
+      var tile = document.querySelectorAll('[data-x="' + (maxDist + x) + '"][data-y="' + randXY + '"]')[0];
+
       var letter = firstWord.text[x];
 
-      createLetterInput(input, tile, firstWord, letter);
+      createLetterInput(tile, firstWord, letter);
     }
-
-    sortedAnswers = sortedAnswers.slice(1);
-    placeWords(sortedAnswers, 'vertical');
+    searchLetterMatches(sortedAnswers, maxDist, randXY, 'vertical');
+    // placeWords(sortedAnswers, 'vertical');
   }
 
   if (dir === 'vertical') {
-
-    var num = Math.floor(Math.random() * (rows - firstWord.length));
-
     for (var y = 0; y < firstWord.length; y++) {
-      var tile = document.querySelectorAll('[data-y="' + (num + y) + '"][data-x="' + randomXY + '"]')[0];
+      var tile = document.querySelectorAll('[data-y="' + (maxDist + y) + '"][data-x="' + randXY + '"]')[0];
       var input = document.createElement("input");
       var letter = firstWord.text[y];
 
-      createLetterInput(input, tile, firstWord, letter);
+      createLetterInput(tile, firstWord, letter);
     }
 
-    sortedAnswers = sortedAnswers.slice(1);
-    placeWords(sortedAnswers, 'horizontal');
+    searchLetterMatches(sortedAnswers, maxDist, randXY, 'horizontal');
+
+    // placeWords(sortedAnswers, 'horizontal');
   }
 }
+
+function searchLetterMatches(sortedAnswers, maxDist, randXY, direction) {
+  var word1 = sortedAnswers[0].text;
+  var word2 = sortedAnswers[1].text;
+
+  for (var i = 0; i < word2.length; i++) {
+    var indexOf = word1.indexOf(word2[i]);
+
+    if (indexOf > 0) {
+      console.log(word2[i]);
+      console.log(word1[indexOf]);
+
+      console.log(word1 + '  ' + word2 + ' ' + indexOf);
+
+      sortedAnswers = sortedAnswers.slice(1);
+      placeWords(sortedAnswers, direction, (maxDist + indexOf), (randXY + i));
+      return;
+
+    }
+  }
+}
+
 
 function placeOtherWords(words, direction) {
   var firstWord = words[0];
